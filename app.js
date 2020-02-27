@@ -1,26 +1,28 @@
 
 window.onload = function() {
-    this.request_NewsData();
+    let articles = this.request_NewsArticles();
+    this.console.log(articles);
 }
 
-function request_NewsData() {
+function request_NewsArticles() {
 
+    let articles = [];
     const request = new XMLHttpRequest();
-    request.open("GET", "http://newsapi.org/v2/everything?q=bitcoin&from=2020-01-27&sortBy=publishedAt&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d", true);
+
+    request.open("GET", "http://newsapi.org/v2/top-headlines?country=us&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d", true);
 
     request.onload = function() {
-
-        data = JSON.parse(this.response);
-
         if (request.status == 200) {
-            data["articles"].forEach(news => {
-                console.log(news);
+            data = JSON.parse(this.response);
+            data["articles"].forEach(article => {
+                    articles.push(new Article(article.source["name"], article.author, article.title,
+                        article.description, article.url, article.urlToImage, article.publishedAt));
             });
-
         }
     }
-
     request.send();
+    return articles;
+
 }
 
 class Article {
