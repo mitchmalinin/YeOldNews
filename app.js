@@ -1,39 +1,62 @@
-
 window.onload = function() {
-    let articles = this.request_NewsArticles();
-    this.console.log(articles);
-}
+  request_NewsArticles();
+};
 
 function request_NewsArticles() {
-
-    let articles = [];
-    const request = new XMLHttpRequest();
-
-    request.open("GET", "http://newsapi.org/v2/top-headlines?country=us&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d", true);
-
-    request.onload = function() {
-        if (request.status == 200) {
-            data = JSON.parse(this.response);
-            data["articles"].forEach(article => {
-                    articles.push(new Article(article.source["name"], article.author, article.title,
-                        article.description, article.url, article.urlToImage, article.publishedAt));
-            });
-        }
+  const request = new XMLHttpRequest();
+  request.open(
+    "GET",
+    "http://newsapi.org/v2/top-headlines?country=us&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d",
+    true
+  );
+  request.onload = function() {
+    if (request.status == 200) {
+      data = JSON.parse(this.response);
+      makeTheArticleRow(data.articles);
     }
-    request.send();
-    return articles;
-
+  };
+  request.send(null);
 }
 
-class Article {
-    constructor(source, author, title, 
-        description, url, urlImg, published) {
-            this.source = source;
-            this.author = author;
-            this.title = title;
-            this.description = description;
-            this.url = url;
-            this.urlImage = urlImg;
-            this.published = published;
-    }
-}
+makeTheArticleRow = allArticles => {
+  let newsContainer = document.querySelector(".newspaper-container");
+  console.log(allArticles);
+  allArticles.forEach(singleArticle => {
+    let newsContentChildren = [];
+    let articleContent = [];
+    let articleContainer = makeAnElement("div", "class", "article-container");
+    let articleImg = makeAnElement("div", "class", "img-container");
+    articleImg.style["background-image"] = `url("${singleArticle.urlToImage}")`;
+    let newsContent = makeAnElement("div", "class", "news-content");
+    let newsAuthor = makeAnElement("h4", "class", "news-author");
+    let newsTitle = makeAnElement("p", "class", "news-title");
+    let newsDescription = makeAnElement("p", "class", "news-description");
+    let newsURL = makeAnElement("a", "href", singleArticle.url);
+    newsURL.innerHTML = "link to article";
+    let newsAuthorText = document.createTextNode(singleArticle.author);
+    let newsTitleText = document.createTextNode(singleArticle.title);
+    let newsDescriptionText = document.createTextNode(
+      singleArticle.description
+    );
+    newsTitle.appendChild(newsTitleText);
+    newsAuthor.appendChild(newsAuthorText);
+    newsDescription.appendChild(newsDescriptionText);
+    newsContentChildren.push(newsAuthor, newsTitle, newsDescription, newsURL);
+    articleContent.push(articleImg, newsContent);
+    appendMultipleChild(newsContentChildren, newsContent);
+    appendMultipleChild(articleContent, articleContainer);
+    newsContainer.appendChild(articleContainer);
+  });
+};
+
+appendMultipleChild = (children, parent) => {
+  children.forEach(child => {
+    parent.appendChild(child);
+  });
+};
+
+makeAnElement = (elementType, attribute, name) => {
+  let newElement = document.createElement(elementType);
+  newElement.setAttribute(attribute, name);
+  return newElement;
+};
