@@ -1,5 +1,6 @@
 window.onload = function() {
   request_NewsArticles();
+  
 };
 
 function request_NewsArticles() {
@@ -32,7 +33,7 @@ makeTheArticleRow = allArticles => {
     let newsTitle = makeAnElement("p", "class", "news-title");
     let newsDescription = makeAnElement("p", "class", "news-description");
     let newsURL = makeAnElement("a", "href", singleArticle.url);
-    newsURL.innerHTML = "link to article";
+    newsURL.innerHTML = singleArticle.url;
     let newsAuthorText = document.createTextNode(singleArticle.author);
     let newsTitleText = document.createTextNode(singleArticle.title);
     let newsDescriptionText = document.createTextNode(
@@ -48,6 +49,23 @@ makeTheArticleRow = allArticles => {
     newsContainer.appendChild(articleContainer);
   });
 };
+
+convertText = (text) => {
+  const request = new XMLHttpRequest();
+  let encodedText = encodeURIComponent(text.trim());
+  request.open(
+    "GET",
+    "https://api.funtranslations.com/translate/shakespeare.json?text=" + encodedText,
+    true
+  );
+  request.onload = function() {
+    if (request.status == 200) {
+      data = JSON.parse(this.response);
+      return data["contents"]["translated"];
+    }
+  };
+  request.send(null);
+}
 
 appendMultipleChild = (children, parent) => {
   children.forEach(child => {
