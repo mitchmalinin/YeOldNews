@@ -4,10 +4,14 @@ window.onload = function() {
 };
 
 function request_NewsArticles() {
+  
+  var elem = document.getElementById("sub-category");
+  var category = elem.options[elem.selectedIndex].value;
+  console.log(category);
   const request = new XMLHttpRequest();
   request.open(
     "GET",
-    "http://newsapi.org/v2/top-headlines?country=us&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d",
+    "http://newsapi.org/v2/top-headlines?country=us&category=" +  category + "&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d",
     true
   );
   request.onload = function() {
