@@ -11,10 +11,12 @@
     <table id="nav-filter">
       <tr id="nav-row">
         <td>
-          <select class="select-options" name="country" id="country"></select>
-        </td>
-        <td>
-          <select onchange="request_NewsArticles()" class="select-options" name="sub-category" id="sub-category">
+          <select
+            onchange="request_NewsArticles()"
+            class="select-options"
+            name="sub-category"
+            id="sub-category"
+          >
             <option value="business">Business</option>
             <option value="entertainment">Entertainment</option>
             <option value="health">Health</option>
@@ -27,7 +29,7 @@
     </table>
 
     <div class="container">
-      <h2>News Paper for Feb 26, 2020</h2>
+      <h2>Top Headlines</h2>
       <div class="newspaper-container"></div>
     </div>
     <script src="app.js"></script>

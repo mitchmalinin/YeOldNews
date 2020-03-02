@@ -1,22 +1,24 @@
 window.onload = function() {
   request_NewsArticles();
-  
 };
 
 function request_NewsArticles() {
-  
   var elem = document.getElementById("sub-category");
   var category = elem.options[elem.selectedIndex].value;
   console.log(category);
   const request = new XMLHttpRequest();
   request.open(
     "GET",
-    "http://newsapi.org/v2/top-headlines?country=us&category=" +  category + "&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d",
+    "http://newsapi.org/v2/top-headlines?country=us&category=" +
+      category +
+      "&apiKey=2de8bebd4cc24d51bc4bf38508bbcd7d",
     true
   );
   request.onload = function() {
     if (request.status == 200) {
       data = JSON.parse(this.response);
+      let newsContainer = document.querySelector(".newspaper-container");
+      newsContainer.innerHTML = "";
       makeTheArticleRow(data.articles);
     }
   };
@@ -54,12 +56,13 @@ makeTheArticleRow = allArticles => {
   });
 };
 
-convertText = (text) => {
+convertText = text => {
   const request = new XMLHttpRequest();
   let encodedText = encodeURIComponent(text.trim());
   request.open(
     "GET",
-    "https://api.funtranslations.com/translate/shakespeare.json?text=" + encodedText,
+    "https://api.funtranslations.com/translate/shakespeare.json?text=" +
+      encodedText,
     true
   );
   request.onload = function() {
@@ -69,7 +72,7 @@ convertText = (text) => {
     }
   };
   request.send(null);
-}
+};
 
 appendMultipleChild = (children, parent) => {
   children.forEach(child => {
