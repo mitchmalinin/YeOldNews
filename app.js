@@ -2,7 +2,15 @@ let allTheArticles = [];
 
 window.onload = function() {
   request_NewsArticles();
+  this.retrieveDate();
 };
+
+function retrieveDate() {
+  var newDate = new Date();
+  let dateContainer = document.querySelector("#date-header");
+  let dateStr = document.createTextNode(newDate.toDateString());
+  dateContainer.appendChild(dateStr);
+}
 
 function request_NewsArticles() {
   var elem = document.getElementById("sub-category");
@@ -25,7 +33,6 @@ function request_NewsArticles() {
         //before you call this funcion take article.title and article.description and do something like "article.title" +"$"+"article.description"
         // then translate that whole string in the function
         let TranslateFullString = article.title + "~" + article.description;
-        console.log(TranslateFullString);
         convertText(TranslateFullString);
         function convertText(text) {
           const request = new XMLHttpRequest();
@@ -66,7 +73,6 @@ function request_NewsArticles() {
 
 makeTheArticleRow = theArticle => {
   let newsContainer = document.querySelector(".newspaper-container");
-  console.log("all the articles", theArticle);
   let newsContentChildren = [];
   let articleContent = [];
   let articleContainer = makeAnElement("div", "class", "article-container");
@@ -79,8 +85,8 @@ makeTheArticleRow = theArticle => {
   let newsURL = makeAnElement("a", "href", theArticle.url);
   newsURL.innerHTML = theArticle.url;
   let newsAuthorText;
-  if (theArticle.author == "null") {
-    newsAuthor.innerHTML = "No Author";
+  if (theArticle.author === null) {
+    newsAuthorText = document.createTextNode("No Author");
   } else {
     newsAuthorText = document.createTextNode(theArticle.author);
   }

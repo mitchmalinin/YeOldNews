@@ -17,9 +17,15 @@ body {
 }
 
 #news-header {
-  margin-bottom: 50px;
+  margin-bottom: 8px;
   font-style: italic;
   font-weight: bold;
+}
+
+#date-header {
+  margin-bottom: 50px;
+  font-weight: lighter;
+  color: gray;
 }
 
 #nav-filter {
